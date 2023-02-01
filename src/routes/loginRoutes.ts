@@ -1,5 +1,9 @@
 import { Request, Response, Router } from "express";
 
+interface RequestWithBody extends Request {
+  body: { [key: string]: string | undefined };
+}
+
 const router = Router();
 
 router.get("/", (req: Request, res: Response) => {
@@ -10,8 +14,8 @@ router.get("/login", (req: Request, res: Response): void => {
   res.send(`
     <form method="POST">
       <div>
-        <label for="username">Username</label>
-        <input type="text" name="username" />
+        <label for="email">Email</label>
+        <input type="text" name="email" />
       </div>
       <div>
         <label for="password">Password</label>
@@ -22,10 +26,14 @@ router.get("/login", (req: Request, res: Response): void => {
     `);
 });
 
-router.post("/login", (req: Request, res: Response): void => {
-  const { username, password } = req.body;
+router.post("/login", (req: RequestWithBody, res: Response): void => {
+  const { email, password } = req.body;
 
-  res.send(username + password);
+  if (email) {
+    res.send(email.toUpperCase());
+  } else {
+    res.send("You must provide an email");
+  }
 });
 
 export { router };

@@ -39,12 +39,22 @@ router.get("/", (req: Request, res: Response) => {
     res.send(`
       <div>
         <div>You are now logged in</div>
-        <a href="">Logout</a>
+        <a href="/logout">Logout</a>
       </div>
       `);
   } else {
-
+    res.send(`
+      <div>
+        <div>You are not login</div>
+        <a href="/login">Logout</a>
+      </div>
+      `);
   }
+});
+
+router.get("/logout", (req: Request, res: Response) => {
+  req.session = undefined;
+  res.redirect("/");
 });
 
 export { router };
